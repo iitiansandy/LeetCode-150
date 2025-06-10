@@ -16,6 +16,5 @@ If you would like to contribute to this repository, please fork the repository a
 This repository is licensed under the MIT License.
 
 ## Resources
-* [LeetCode](URL_ADDRESScode.com/)
-* [NeetCode](URL_ADDRESScode.com/)
+* [LeetCode](https://leetcode.com/studyplan/top-interview-150/)
 * [Data Structures and Algorithms](https://www.geeksforgeeks.org/data-structures/)
