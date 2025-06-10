@@ -16,8 +16,6 @@ If you would like to contribute to this repository, please fork the repository a
 This repository is licensed under the MIT License.
 
 ## Resources
-* [LeetCode](
 * [LeetCode](URL_ADDRESScode.com/)
-* [Data Structures a
-* [LeetCode](URL_ADDRESScode.com/)
-* [Data Structures and Algorithms](URL_ADDRESSms](https://www.geeksforgeeks.org/data-structures/)
+* [NeetCode](URL_ADDRESScode.com/)
+* [Data Structures and Algorithms](https://www.geeksforgeeks.org/data-structures/)
