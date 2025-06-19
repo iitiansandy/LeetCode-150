@@ -66,3 +66,21 @@ function removeDuplicates(arr) {
     return i + 1; // Return the length of the array without duplicates
 }
 // console.log(removeDuplicates([1, 1, 2, 2, 3, 3, 4, 4, 5, 5]));
+
+
+/** * Prob-4 Remove Duplicates from Sorted Array II
+ * Given an integer array nums sorted in non-decreasing order, remove some duplicates in-place such that each unique element appears at most twice. The relative order of the elements should be kept the same.
+ */
+function removeDuplicatesII(arr) {
+    if (arr.length <= 2) return arr.length; // If the array has 2 or fewer elements, return its length
+
+    let i = 2; // Start from the third element
+    for (let j = 2; j < arr.length; j++) {
+        if (arr[j] !== arr[i - 2]) { // Check if the current element is different from the element two places back
+            arr[i] = arr[j]; // Place it in the next position
+            i++;
+        }
+    }
+    return i; // Return the new length of the array without duplicates
+}
+// console.log(removeDuplicatesII([1, 1, 1, 2, 2, 3]));
