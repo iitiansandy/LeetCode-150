@@ -1,5 +1,6 @@
 /** Prob-1 Merge Sorted Arrays
- * You are given two integer arrays nums1 and nums2, sorted in non-decreasing order, and two integers m and n, representing the number of elements in nums1 and nums2 respectively.
+ * You are given two integer arrays nums1 and nums2, sorted in non-decreasing order, and two integers m and n, 
+ * representing the number of elements in nums1 and nums2 respectively.
  * Merge nums1 and nums2 into a single array sorted in non-decreasing order.
  */
 
@@ -34,8 +35,11 @@ function mergeSort(arr1, arr2) {
 
 /**
  * Prob-2 Remove Element
- * Given an integer array nums and an integer val, remove all occurrences of val in nums in-place. The relative order of the elements may be changed.
- * Since it is impossible to change the length of the array in some languages, you must instead have the result be placed in the first part of the array nums. More formally, if there are k elements after removing the duplicates, then the first k elements of nums should hold the final result. It does not matter what you leave beyond the first k elements.
+ * Given an integer array nums and an integer val, remove all occurrences of val in nums in-place. The relative order 
+ * of the elements may be changed.
+ * Since it is impossible to change the length of the array in some languages, you must instead have the result be 
+ * placed in the first part of the array nums. More formally, if there are k elements after removing the duplicates, 
+ * then the first k elements of nums should hold the final result. It does not matter what you leave beyond the first k elements.
  */
 
 function removeElement(arr, val) {
@@ -69,7 +73,8 @@ function removeDuplicates(arr) {
 
 
 /** * Prob-4 Remove Duplicates from Sorted Array II
- * Given an integer array nums sorted in non-decreasing order, remove some duplicates in-place such that each unique element appears at most twice. The relative order of the elements should be kept the same.
+ * Given an integer array nums sorted in non-decreasing order, remove some duplicates in-place such that each unique element appears 
+ * at most twice. The relative order of the elements should be kept the same.
  */
 function removeDuplicatesII(arr) {
     if (arr.length <= 2) return arr.length; // If the array has 2 or fewer elements, return its length
@@ -84,3 +89,49 @@ function removeDuplicatesII(arr) {
     return i; // Return the new length of the array without duplicates
 }
 // console.log(removeDuplicatesII([1, 1, 1, 2, 2, 3]));
+
+
+/**
+ * Prob-5 Majority Element
+ * Given an array nums of size n, return the majority element.
+ * The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+ */
+
+function majorityElement(arr) {
+    const hash = {};
+    let res = 0;
+    let majority = 0;
+
+    for (let n of arr) {
+        hash[n] = (hash[n] || 0) + 1;
+
+        if (hash[n] > majority) {
+            res = n;
+            majority = hash[n];
+        }
+    }
+    return res;
+}
+
+// console.log(majorityElement([2, 2, 1, 1, 1, 2, 2]));
+
+
+/**
+ * Prob-6 Majority Element II
+ * Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.
+ */
+
+function majorityElementII(arr) {
+    const hash = {};
+    let res = [];
+    let majority = Math.floor(arr.length / 3);
+
+    for (let n of arr) {
+        hash[n] = (hash[n] || 0) + 1;
+
+        if (hash[n] > majority) {
+            res.push(n);
+        }
+    }
+    return res;
+}

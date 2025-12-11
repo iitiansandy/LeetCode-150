@@ -1,74 +1,117 @@
-const CryptoJS = require("crypto-js");
+const crypto = require("crypto");
 
-const secretKey = CryptoJS.enc.Utf8.parse("9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d"); 
-const staticIV = CryptoJS.enc.Utf8.parse("1234567890abcdef"); // 16-byte IV
+// ----------------------
+// Replace with your own keys
+// ----------------------
+const publicKeyPem = `-----BEGIN RSA PUBLIC KEY-----
+MIIBCgKCAQEArUERADds02ZTa9S6nlv8uwYgOiuIUHBvGcBR2M3XJ2o0JkmgJr1Z
+u+9cc5KfasmsE5Bhp1K66cW2aM5rWccggRXS7b6ZKyTffrp9ElFTNkFx8C2bab4h
+D4nGqNNJePTVSksK1TwBIzs5PNTmejgj4RlXU1SBC8jMcCdrAr58k6M8O44nfvNd
+tl9ZgS+Ssh3NUz+Ef3ixqHdwwP5FpQhnHvIwSIbH+PG1d5xi2PPGvL4ZJinIcP6y
+scZhWvDRddemkVUZhUAldOprDFWOXTqoykGEkqfE+/lAn+wx0nD3j/YdTUTA3mHq
+P+0ay6yTrxxqnpCdzUjy4ymxO6k6NegKiwIDAQAB
+-----END RSA PUBLIC KEY-----`;
 
-// console.log("secretKey:", secretKey);
-// console.log("staticIV:", staticIV);
+const privateKeyPem = `-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEArUERADds02ZTa9S6nlv8uwYgOiuIUHBvGcBR2M3XJ2o0Jkmg
+Jr1Zu+9cc5KfasmsE5Bhp1K66cW2aM5rWccggRXS7b6ZKyTffrp9ElFTNkFx8C2b
+ab4hD4nGqNNJePTVSksK1TwBIzs5PNTmejgj4RlXU1SBC8jMcCdrAr58k6M8O44n
+fvNdtl9ZgS+Ssh3NUz+Ef3ixqHdwwP5FpQhnHvIwSIbH+PG1d5xi2PPGvL4ZJinI
+cP6yscZhWvDRddemkVUZhUAldOprDFWOXTqoykGEkqfE+/lAn+wx0nD3j/YdTUTA
+3mHqP+0ay6yTrxxqnpCdzUjy4ymxO6k6NegKiwIDAQABAoIBABiKLCDzuMkDUrLl
+9r48w+yu+XGZKOhRL0Cz1OP4g+O5T0RSZAoYrSp0GjbkgGAHy1pvYOWU+j89GeZ5
+FmDTq5mdFbtG++WjMLoqf/yljZEUbqcDpA0I48s89ekubtcLFrWR237zI4DHVVwg
+a7oeqYurTeB9ClTjpCaz7pxSOXhPsqsxoXonej4hC5TiNgc59qp4eTevvPwAyiej
+fHZ6SGwUog1ru+pwlt9irVSxYBhkgUgGjzceVTN5Z3W6IwM64m9GLNMnLs7tZ3+I
+HurevzEKoBoiGTHcB9Kwy9cQp5SHcZiJNXoe55m9rn644psGZLFBlm42LXz6Ts8d
+LCmn0IECgYEA6kmH8dYAuhJXA0mLh/34H6mJX/ks8JJCmheqabOpl6okosdZcM4G
+TkSlaZMRnJTb/DuzwUPXI+Ylql00U2Omkqa8xiqN8gKq9bSvRWbwW9gHMxCYPffZ
+S0vM3s5nRDgcaUWCo0OvOqspgBvQzlrMzUyi+pouMk/p/49WQhobltkCgYEAvU+G
+VpNyey9gr+wZs8+UH4fn5wn7wjvZCQak3OsUkC6BHtc1d4DEGG+q8r6/sD9v2x4q
+X8j7+az/zB8nZvpZOP7gNdPIbhyHWjdgBYPZgPJAUTrPrLUkxARiurbErpEqprhB
+ZfOQJawBOduPQBw+j4D4FtA13FxRiKvF5gyvtgMCgYAGvC5oSVqj/rr5oTedpTNo
+1ZrZY3RjRhEcFOoVN9D8RyvechSkJYgQ3/BRZKTw92aLjbvRJn4czhTvHNbQPuEe
+/iQXHkoOVv1LKvKO8DKgsUkjsqptvZ5Fh9xP22ckkuheLl1fDCcRbLI4uJP8Gqgg
+jr9wrNX/JET5z8kPBWkdoQKBgQC2mPcdmLjqoqci6Jtd+ZGI3EDNc663CZzs/NCW
+GdVKwOBgS/pRWw1J+KOt4ljoeje85RrAKw8II1rTmxUZWc4nkIfYw37m3nObjB/9
+EdEAdCmfcBeSIWLmAsjsCZAqRPEbwEusN8LI42CHWwSQNO4O4rno30mkVBN8vRp0
+K7Zr2wKBgQCUHEP89di9IatAScZA4CYNZ1JIjmzFC37VczF51iXTFDk1r1hNv3B2
+xSud9LJSHCFoz9FT1xEBgKJ8YCgw4zXTfZjCS8mNtPZWFL8NrrBbycv0VI+8C09N
+JyKOznpPAgUEFis3BJ+SjPN5pFnEVQ+Qb4OFYqnJFz0PhL5G7u7BCQ==
+-----END RSA PRIVATE KEY-----`;
 
 
-// Function to encrypt an object
-function encryptObject(data) {
-    const jsonString = JSON.stringify(data); // Convert object to JSON string
+// -----------------------------------------------------------
+// ENCRYPT OBJECT
+// -----------------------------------------------------------
+function encryptObject(obj) {
+  // 1. Convert object → JSON string
+  const plainText = JSON.stringify(obj);
 
-    const encrypted = CryptoJS.AES.encrypt(
-        jsonString, 
-        secretKey, 
-        {
-            iv: staticIV,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7
-        }
-    );
+  // 2. Generate AES key + IV
+  const aesKey = crypto.randomBytes(32); // 256-bit
+  const iv = crypto.randomBytes(16);
 
-    return encrypted.toString(); // Return encrypted data
+  // 3. AES Encrypt JSON data
+  const cipher = crypto.createCipheriv("aes-256-cbc", aesKey, iv);
+  let encryptedData = cipher.update(plainText, "utf8", "base64");
+  encryptedData += cipher.final("base64");
+
+  // 4. Encrypt AES key using RSA public key
+  const encryptedKey = crypto.publicEncrypt(
+    { key: publicKeyPem, padding: crypto.constants.RSA_PKCS1_OAEP_PADDING },
+    aesKey
+  );
+
+  return {
+    encryptedData,
+    encryptedKey: encryptedKey.toString("base64"),
+    iv: iv.toString("base64"),
+  };
 }
 
 
-// Function to decrypt an object
-function decryptObject(encryptedData) {
-    const decrypted = CryptoJS.AES.decrypt(
-        encryptedData,
-        secretKey,
-        {
-            iv: staticIV,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7
-        }
-    );
-  
-    // console.log("decrypted data:", decrypted);
-  
-    const decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
-    // console.log("decryptedText:", decryptedText);
-  
-    if (!decryptedText) {
-        throw new Error("Decryption failed. Check your key, IV, and input data.");
-    }
-  
-    return JSON.parse(decryptedText); // Convert JSON string back to object
+// -----------------------------------------------------------
+// DECRYPT OBJECT
+// -----------------------------------------------------------
+function decryptObject(encryptedPackage) {
+  const { encryptedData, encryptedKey, iv } = encryptedPackage;
+
+  // 1. Decrypt AES key using RSA private key
+  const aesKey = crypto.privateDecrypt(
+    { key: privateKeyPem, padding: crypto.constants.RSA_PKCS1_OAEP_PADDING },
+    Buffer.from(encryptedKey, "base64")
+  );
+
+  // 2. AES Decrypt JSON string
+  const decipher = crypto.createDecipheriv(
+    "aes-256-cbc",
+    aesKey,
+    Buffer.from(iv, "base64")
+  );
+
+  let decrypted = decipher.update(encryptedData, "base64", "utf8");
+  decrypted += decipher.final("utf8");
+
+  // 3. Convert JSON → Object
+  return JSON.parse(decrypted);
 }
 
 
-// Example Usage
-const data = {
-    "_default": "YES",
-    "_title": "Mohan Kumar P",
-    "line1": "No 58, 11 the cross maruthi nagar",
-    "line2": "perfect coumputer, madiwala, banglore",
-    "city": "Bangalore",
-    "state": "Karnataka",
-    "country": "India",
-    "PIN": "560068",
-    "email": "mohankumar.p98@gmail.com",
-    "phone": "+919738356931",
-    "entityAction": "edit",
-    "entityAttrName": "items",
-    "area": "madiwala"
+
+// -----------------------------------------------------------
+// TEST EXAMPLE
+// -----------------------------------------------------------
+const sampleObj = {
+  name: "John Doe",
+  phone: "+91981578956",
+  age: 25,
+  roles: ["admin", "backend-dev"],
+  meta: { a: 1, b: 2 }
 };
 
-// const encryptedData = encryptObject(data);
-const encryptedData = 'E0MMKeHLq9mYG7JAjzLj+MGQq0rsP1FASmK+Gv+cOJ41y32bRXQZYEOwNLHfonV8RMnJH0mqg7K8bv4mZ/M79AZRW/rbdbLIDrvIUcB+8eqcdPGNfhb/ppqKi3Z8/Cyd7tiqIax2Xx38aO9Fto2zIFH/3cYQCwN+kZtaoX9ym9hzG9EGyHd4UOD+p/MzzveYCatLaPQfwkGaCNrCm9m3gr0hJso9B0Xp5QI1z9vyfeAKljT0TniK1pMBlGbDXRN0IFUF0PxciW+e2nFXprPsXzsttcat+ybdhL4oCZz2bEkQNiZQDIsDZwsi+DV6wYZh5FjaCN29yDC5wgsVCReE5xounfB3nKHlEelETFSNDgvHCDWeGZJP8a0hrnVvSdJnJSqnJbW+ENyaSEaBqN27Xjl+56s7N9IuB3ZSeAGJb/w='
-console.log("🔐 Encrypted Data:", encryptedData);
-const decrypData = decryptObject(encryptedData);
-console.log("🔓 Decrypted Data:", decrypData);
+const encrypted = encryptObject(sampleObj);
+console.log("Encrypted Package:", encrypted);
+
+const decrypted = decryptObject(encrypted);
+console.log("Decrypted Object:", decrypted);
