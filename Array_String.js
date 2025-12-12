@@ -94,7 +94,8 @@ function removeDuplicatesII(arr) {
 /**
  * Prob-5 Majority Element
  * Given an array nums of size n, return the majority element.
- * The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+ * The majority element is the element that appears more than ⌊n / 2⌋ times. 
+ * You may assume that the majority element always exists in the array.
  */
 
 function majorityElement(arr) {
@@ -135,3 +136,50 @@ function majorityElementII(arr) {
     }
     return res;
 }
+
+// console.log(majorityElementII([3, 2, 3]));
+
+/**
+ * Prob-7 Rotate Array
+ * Given an array, rotate the array to the right by k steps, where k is non-negative.
+ */
+
+function reverse(arr, start, end) {
+    while (start < end) {
+        [arr[start], arr[end]] = [arr[end], arr[start]];
+        start++;
+        end--;
+    }
+}
+
+function rotateArray(arr, k) {
+    k = k % arr.length; // Handle cases where k is greater than the array length
+    reverse(arr, 0, arr.length - 1); // Reverse the entire array
+    reverse(arr, 0, k - 1); // Reverse the first k elements
+    reverse(arr, k, arr.length - 1); // Reverse the remaining elements
+    return arr;
+}
+
+// console.log(rotateArray([1, 2, 3, 4, 5, 6, 7], 3));
+
+/**
+ * Prob-8 Best time to buy and sell stock
+ * You are given an array prices where prices[i] is the price of a given stock on the ith day.
+ * You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in 
+ * the future to sell that stock.
+ * Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+ */
+
+function maxProfit(prices) {
+    let maxProfit = 0;
+    let minPrice = prices[0];
+
+    for (let i = 1; i < prices.length; i++) {
+        maxProfit = Math.max(maxProfit, prices[i] - minPrice);
+        minPrice = Math.min(minPrice, prices[i]);
+    }
+
+    return maxProfit;
+}
+
+// console.log(maxProfit([7, 1, 5, 3, 6, 4]));
