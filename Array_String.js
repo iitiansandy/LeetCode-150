@@ -171,11 +171,16 @@ function rotateArray(arr, k) {
  */
 
 function maxProfit(prices) {
+    // Initialize maxProfit to 0
     let maxProfit = 0;
+    // Initialize minPrice to the first price in the array
     let minPrice = prices[0];
 
+    // Iterate through the array starting from the second day
     for (let i = 1; i < prices.length; i++) {
+        // Update maxProfit if the current profit is higher than the previous maxProfit
         maxProfit = Math.max(maxProfit, prices[i] - minPrice);
+        // Update minPrice if the current price is lower than the previous minPrice
         minPrice = Math.min(minPrice, prices[i]);
     }
 
@@ -183,3 +188,72 @@ function maxProfit(prices) {
 }
 
 // console.log(maxProfit([7, 1, 5, 3, 6, 4]));
+
+
+/**
+ * Prob-9 Best time to buy and sell stock II
+ * You are given an integer array prices where prices[i] is the price of a given stock on the ith day.
+ * On each day, you may decide to buy and/or sell the stock. You can only hold at most one share of the stock at any time. 
+ * However, you can buy it then immediately sell it on the same day.
+ * Find and return the maximum profit you can achieve.
+ */
+
+function maxProfitII(prices) {
+    // Initialize maxProfit to 0
+    let maxProfit = 0;
+    // Iterate through the array starting from the second day
+    for (let i = 1; i < prices.length; i++) {
+        // If the price on the current day is higher than the price on the previous day,
+        // it means we can make a profit by selling on the current day after buying on the previous day.
+        // Add the profit to the maxProfit.
+        if (prices[i] > prices[i - 1]) {
+            maxProfit += prices[i] - prices[i - 1];
+        }
+    }
+
+    return maxProfit;
+}
+
+// console.log(maxProfitII([7, 1, 5, 3, 6, 4]));
+
+
+/**
+ * Prob-10 Best time to buy and sell stock III
+ * You are given an array prices where prices[i] is the price of a given stock on the ith day.
+ * Find the maximum profit you can achieve. You may complete at most two transactions.
+ */
+
+function maxProfitIII(prices) {
+    // Initialize maxProfit to 0
+    let maxProfit = 0;
+    // Initialize minPrice to the first price in the array
+    let minPrice = prices[0];
+    // Initialize maxPrice to the last price in the array
+    let maxPrice = prices[prices.length - 1];
+    // Initialize maxProfitFromLeft to store the maximum profit from the left side of the array
+    let maxProfitFromLeft = new Array(prices.length).fill(0);
+    // Initialize maxProfitFromRight to store the maximum profit from the right side of the array
+    let maxProfitFromRight = new Array(prices.length).fill(0);
+
+    // Calculate the maximum profit from the left side of the array
+    for (let i = 1; i < prices.length; i++) {
+        // Update maxProfitFromLeft[i] with the maximum profit from the left side up to the current day
+        maxProfitFromLeft[i] = Math.max(maxProfitFromLeft[i - 1], prices[i] - minPrice);
+        minPrice = Math.min(minPrice, prices[i]);
+    }
+
+    for (let i = prices.length - 2; i >= 0; i--) {
+        // Update maxProfitFromRight[i] with the maximum profit from the right side up to the current day
+        maxProfitFromRight[i] = Math.max(maxProfitFromRight[i + 1], maxPrice - prices[i]);
+        maxPrice = Math.max(maxPrice, prices[i]);
+    }
+
+    for (let i = 0; i < prices.length; i++) {
+        // Update maxProfit with the maximum profit from the left side and the right side up to the current day
+        maxProfit = Math.max(maxProfit, maxProfitFromLeft[i] + maxProfitFromRight[i]);
+    }
+
+    return maxProfit;
+}
+
+// console.log(maxProfitIII([3, 3, 5, 0, 0, 3, 1, 4]));
