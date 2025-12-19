@@ -345,4 +345,69 @@ function maxProfitV(prices) {
     return maxProfit;
 }
 
-console.log(maxProfitV([1, 2, 3, 0, 2])); // 3
+// console.log(maxProfitV([1, 2, 3, 0, 2])); // 3
+
+
+/**
+ * return all the possible substrings of a string
+ * @param {string} str
+ * @return {string[]}
+ * @example
+ * substrings('abc') // ['a', 'ab', 'abc', 'b', 'bc', 'c']
+ */
+
+function substrings(str) {
+  const substrings = [];
+  for (let i = 0; i < str.length; i++) {
+    for (let j = i + 1; j <= str.length; j++) {
+      substrings.push(str.slice(i, j));
+    }
+  }
+  return substrings;
+}
+
+// test cases
+// console.log(substrings('abc')); // ['a', 'ab', 'abc', 'b', 'bc', 'c']
+
+/**
+ * return all the possible subarrays of an array
+ * @param {Array} arr
+ * @return {Array[]}
+ * @example
+ * substrings([1, 2, 3]) // [[1], [1, 2], [1, 2, 3], [2], [2, 3], [3]]
+ */
+
+function subarrays(arr) {
+  const subarrays = [];
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = i + 1; j <= arr.length; j++) {
+      subarrays.push(arr.slice(i, j));
+    }
+  }
+  return subarrays;
+}
+
+// test cases
+// console.log(subarrays([1, 2, 3])); // [[1], [1, 2], [1, 2, 3], [2], [2, 3], [3]]
+
+
+/**
+ * Prob-13 Jump Game
+ * You are given an integer array nums. You are initially positioned at the array's first index, and each
+ * element in the array represents your maximum jump length at that position.
+ * Return true if you can reach the last index, or false otherwise.
+ */
+
+function canJump(nums) {
+    let maxReach = 0;
+    for (let i = 0; i < nums.length; i++) {
+        if (i > maxReach) {
+            return false;
+        }
+        maxReach = Math.max(maxReach, i + nums[i]);
+    }
+    return true;
+}
+
+// console.log(canJump([2, 3, 1, 1, 4])); // true
+// console.log(canJump([3, 2, 1, 0, 4])); // false

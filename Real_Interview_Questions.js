@@ -67,3 +67,35 @@ function shopWith6Units(amount) {
 
 // Example
 // console.log(shopWith6Units(99)); // [ 50, 20, 20, 5, 2, 2 ]
+
+
+// Function Currying
+function sum(a) {
+  return function (b) {
+    return function (c) {
+      return a + b + c;
+    }
+  };
+}
+
+// Example
+// console.log(sum(2)(3)(4)); // 9
+
+
+// Generator Function to yield Fibonacci numbers
+function* fibonacciGenerator() {
+  let a = 0, b = 1;
+  while (true) {
+    yield a;
+    [a, b] = [b, a + b];
+  }
+}
+
+// Example
+// const fibGen = fibonacciGenerator();
+// console.log(fibGen.next().value); // 0
+// console.log(fibGen.next().value); // 1
+// console.log(fibGen.next().value); // 1
+// console.log(fibGen.next().value); // 2
+// console.log(fibGen.next().value); // 3
+// console.log(fibGen.next().value); // 5
