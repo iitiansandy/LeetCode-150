@@ -411,3 +411,99 @@ function canJump(nums) {
 
 // console.log(canJump([2, 3, 1, 1, 4])); // true
 // console.log(canJump([3, 2, 1, 0, 4])); // false
+
+
+/**
+ * Prob-14 Reverse String
+ * Write a function that reverses a string. The input string is given as an array of characters s.
+ * You must do this by modifying the input array in-place with O(1) extra memory.
+ */
+
+function reverseStringInPlace(s) {
+    let left = 0;
+    let right = s.length - 1;
+    while (left < right) {
+        [s[left], s[right]] = [s[right], s[left]];
+        left++;
+        right--;
+    }
+}
+
+// test case
+// let strArr = ['h', 'e', 'l', 'l', 'o'];
+// reverseStringInPlace(strArr);
+// console.log(strArr); // ['o', 'l', 'l', 'e', 'h']
+
+// time complexity: O(n)
+// space complexity: O(1)
+function reverseString(str) {
+    let charArr = str.split('');
+    let left = 0;
+    let right = charArr.length - 1;
+    while (left < right) {
+        [charArr[left], charArr[right]] = [charArr[right], charArr[left]];
+        left++;
+        right--;
+    }
+    return charArr.join('');
+}
+
+// let str = "hello";
+// console.log(reverseString(str));
+// time complexity: O(n)
+// space complexity: O(n)
+
+
+/**
+ * Prob-15 Jump Game II
+ * You are given a 0-indexed array of integers nums of length n. 
+ * You are initially positioned at nums[0]. Each element nums[i] represents the maximum length of a forward jump from index i. 
+ * In other words, if you are at nums[i], you can jump to any nums[i + j] where:
+ * 0 <= j <= nums[i] and
+ * i + j < n
+ * Return the minimum number of jumps to reach nums[n - 1]. The test cases are generated such that you can reach nums[n - 1].
+ */
+
+function jump(nums) {
+    let jumps = 0;
+    let currentEnd = 0;
+    let farthest = 0;
+
+    for (let i = 0; i < nums.length - 1; i++) {
+        farthest = Math.max(farthest, i + nums[i]);
+        if (i === currentEnd) {
+            jumps++;
+            currentEnd = farthest;
+        }
+    }
+
+    return jumps;
+}
+
+// console.log(jump([2, 3, 1, 1, 4])); // 2
+// console.log(jump([2, 3, 0, 1, 4])); // 2
+
+
+/**
+ * Prob-16 H-Index
+ * Given an array of integers citations where citations[i] is the number of citations a researcher received for their ith paper, 
+ * return compute the researcher's h-index.
+ * According to the definition of h-index on Wikipedia: A scientist has an index h if h of their n papers have at least h citations each, 
+ * and the other n − h papers have no more than h citations each.
+ */
+
+function hIndex(citations) {
+    citations.sort((a, b) => b - a);
+    let h = 0;
+    for (let i = 0; i < citations.length; i++) {
+        if (citations[i] >= i + 1) {
+            h = i + 1;
+        } else {
+            break;
+        }
+    }
+    return h;
+}
+
+// console.log(hIndex([3, 0, 6, 1, 5])); // 3
+// console.log(hIndex([1, 3, 1])); // 1
