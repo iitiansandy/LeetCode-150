@@ -507,3 +507,82 @@ function hIndex(citations) {
 
 // console.log(hIndex([3, 0, 6, 1, 5])); // 3
 // console.log(hIndex([1, 3, 1])); // 1
+
+
+/**
+ * Prob-17 H-Index II
+ * Given an array of integers citations where citations[i] is the number of citations a researcher received for their ith paper, 
+ * return compute the researcher's h-index.
+ * According to the definition of h-index on Wikipedia: A scientist has an index h if h of their n papers have at least h citations each, 
+ * and the other n − h papers have no more than h citations each.
+ */
+
+function hIndexII(citations) {
+    let n = citations.length;
+    let left = 0;
+    let right = n - 1;
+
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+        if (citations[mid] >= n - mid) {
+            right = mid - 1;
+        } else {
+            left = mid + 1;
+        }
+    }
+
+    return n - left;
+}
+
+// console.log(hIndexII([0, 1, 3, 5, 6])); // 3
+// console.log(hIndexII([1, 2, 4, 4, 5])); // 3
+
+
+/**
+ * Prob-18 Insert Delete GetRandom O(1)
+ * Design a data structure that supports all following operations in average O(1) time.
+ * insert(val): Inserts an item val to the set if not already present.
+ * remove(val): Removes an item val from the set if present.
+ * getRandom: Returns a random element from current set of elements. Each element must have the same probability of being returned.
+ */
+
+function RandomizedSet() {
+    this.map = new Map();
+    this.list = [];
+}
+
+RandomizedSet.prototype.insert = function(val) {
+    if (this.map.has(val)) {
+        return false;
+    }
+    this.map.set(val, this.list.length);
+    this.list.push(val);
+    return true;
+};
+
+RandomizedSet.prototype.remove = function(val) {
+    if (!this.map.has(val)) {
+        return false;
+    }
+    let index = this.map.get(val);
+    this.map.set(this.list[this.list.length - 1], index);
+    [this.list[index], this.list[this.list.length - 1]] = [this.list[this.list.length - 1], this.list[index]];
+    this.list.pop();
+    this.map.delete(val);
+    return true;
+};
+
+RandomizedSet.prototype.getRandom = function() {
+    let randomIndex = Math.floor(Math.random() * this.list.length);
+    return this.list[randomIndex];
+};
+
+// Example usage:
+// let randomizedSet = new RandomizedSet();
+// console.log(randomizedSet.insert(1)); // true
+// console.log(randomizedSet.remove(2)); // false
+// console.log(randomizedSet.insert(2)); // true
+// console.log(randomizedSet.getRandom()); // 1 or 2
+// console.log(randomizedSet.remove(1)); // true
+// console.log(randomizedSet.insert(2)); // false
+// console.log(randomizedSet.getRandom()); // 2
