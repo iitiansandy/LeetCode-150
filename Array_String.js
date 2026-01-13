@@ -586,3 +586,55 @@ RandomizedSet.prototype.getRandom = function() {
 // console.log(randomizedSet.remove(1)); // true
 // console.log(randomizedSet.insert(2)); // false
 // console.log(randomizedSet.getRandom()); // 2
+
+
+/**
+ * Prob-19 Insert Delete GetRandom O(1) - Duplicates allowed
+ * Design a data structure that supports all following operations in average O(1) time.
+ * insert(val): Inserts an item val to the set if not already present.
+ * remove(val): Removes an item val from the set if present.
+ * getRandom: Returns a random element from current set of elements. Each element must have the same probability of being returned.
+ */
+
+function RandomizedCollection() {
+    this.map = new Map();
+    this.list = [];
+}
+
+RandomizedCollection.prototype.insert = function(val) {
+    let contains = this.map.has(val);
+    if (!contains) {
+        this.map.set(val, new Set());
+    }
+    this.map.get(val).add(this.list.length);
+    this.list.push(val);
+    return !contains;
+};
+
+RandomizedCollection.prototype.remove = function(val) {
+    if (!this.map.has(val) || this.map.get(val).size === 0) {
+        return false;
+    }
+    let indexToRemove = this.map.get(val).values().next().value;
+    this.map.get(val).delete(indexToRemove);
+    let lastElement = this.list[this.list.length - 1];
+    this.list[indexToRemove] = lastElement;
+    this.map.get(lastElement).add(indexToRemove);
+    this.map.get(lastElement).delete(this.list.length - 1);
+    this.list.pop();
+    return true;
+};
+
+RandomizedCollection.prototype.getRandom = function() {
+    let randomIndex = Math.floor(Math.random() * this.list.length);
+    return this.list[randomIndex];
+};
+
+// Example usage:
+// let randomizedCollection = new RandomizedCollection();
+// console.log(randomizedCollection.insert(1)); // true
+// console.log(randomizedCollection.insert(1)); // false
+// console.log(randomizedCollection.insert(2)); // true
+// console.log(randomizedCollection.getRandom()); // 1 or 2
+// console.log(randomizedCollection.remove(1)); // true
+// console.log(randomizedCollection.getRandom()); // 1 or 2
