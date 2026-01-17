@@ -638,3 +638,26 @@ RandomizedCollection.prototype.getRandom = function() {
 // console.log(randomizedCollection.getRandom()); // 1 or 2
 // console.log(randomizedCollection.remove(1)); // true
 // console.log(randomizedCollection.getRandom()); // 1 or 2
+
+ 
+/**
+ * Prob: Find First Non Repeating Character in a string
+ * Asked in PWC Interview (17 Jan 2026)
+ */
+
+function firstNonRepeatingChar(str) {
+    const map = new Map();
+
+    for (let char of str) {
+        map.set(char, (map.get(char) || 0) + 1);
+    }
+
+    for (let char of str) {
+        if (map.get(char) === 1) {
+            return char;
+        }
+    }
+    return -1;
+}
+
+// console.log(firstNonRepeatingChar("geeksforgeeks")); // 'l'
