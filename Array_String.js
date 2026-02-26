@@ -725,4 +725,4 @@ function canCompleteCircuit(gas, cost) {
     return start;
 }
 
-console.log(canCompleteCircuit([1, 2, 3, 4, 5], [3, 4, 5, 1, 2])); // 3
+// console.log(canCompleteCircuit([1, 2, 3, 4, 5], [3, 4, 5, 1, 2])); // 3
