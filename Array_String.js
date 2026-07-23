@@ -726,3 +726,81 @@ function canCompleteCircuit(gas, cost) {
 }
 
 // console.log(canCompleteCircuit([1, 2, 3, 4, 5], [3, 4, 5, 1, 2])); // 3
+
+
+// Talic Interview Questions
+/**
+ * consider the following arr of employees: 
+ * const empArr = [
+ * {name: "a", empCode: "12", pinCode: "123"}, 
+ * {name: "b", empCode: "13", pinCode: "123"}, 
+ * {name: "c", empCode: "14", pinCode: "125"}, 
+ * {name: "d", empCode: "15", pinCode: "125"}, 
+ * {name: "e", empCode: "16", pinCode: "126"}, 
+ * {name: "f", empCode: "17", pinCode: "126"}
+ * ]; now i need to return the employees based on their pin code. 
+ * how can i do that in javascript?
+ */
+
+const empArr = [
+  { name: "a", empCode: "12", pinCode: "123" },
+  { name: "b", empCode: "13", pinCode: "123" },
+  { name: "c", empCode: "14", pinCode: "125" },
+  { name: "d", empCode: "15", pinCode: "125" },
+  { name: "e", empCode: "16", pinCode: "126" },
+  { name: "f", empCode: "17", pinCode: "126" },
+];
+
+const groupedByPinCode = empArr.reduce((acc, emp) => {
+  if (!acc[emp.pinCode]) {
+    acc[emp.pinCode] = [];
+  }
+  acc[emp.pinCode].push(emp);
+  return acc;
+}, {});
+
+// console.log(groupedByPinCode);
+
+/**
+ * find first not repeating character from an string using javascipt. use optimize code. 
+ * Example: let str = 'aabbcdde' ans: c
+ */
+
+function firstNonRepeatingChar(str) {
+    const freq = new Map();
+
+    // Count frequency of each character
+    for (const ch of str) {
+        freq.set(ch, (freq.get(ch) || 0) + 1);
+    }
+
+    // Find the first character with frequency 1
+    for (const ch of str) {
+        if (freq.get(ch) === 1) {
+            return ch;
+        }
+    }
+
+    return null; // No non-repeating character
+}
+
+// const str = "aabbcdde";
+// console.log(firstNonRepeatingChar(str)); // c
+
+function firstNonRepeatingChar(str) {
+    const freq = {};
+
+    for (const ch of str) {
+        freq[ch] = (freq[ch] || 0) + 1;
+    }
+
+    for (const ch of str) {
+        if (freq[ch] === 1) {
+            return ch;
+        }
+    }
+
+    return null;
+}
+
+// console.log(firstNonRepeatingChar("aabbcdde")); // c
