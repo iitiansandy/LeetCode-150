@@ -84,3 +84,70 @@ function removeDuplicatesII(arr) {
     return i; // Return the new length of the array without duplicates
 }
 // console.log(removeDuplicatesII([1, 1, 1, 2, 2, 3]));
+
+
+// Talic Interview Question
+const empArr = [
+    {name: "a", empCode: "12", pinCode: "123"}, 
+    {name: "b", empCode: "13", pinCode: "123"}, 
+    {name: "c", empCode: "14", pinCode: "125"}, 
+    {name: "d", empCode: "15", pinCode: "125"}, 
+    {name: "e", empCode: "16", pinCode: "126"}, 
+    {name: "f", empCode: "17", pinCode: "126"}];
+
+
+const groupedByPinCode = empArr.reduce((acc, emp) => {
+    if (!acc[emp.pinCode]) {
+        acc[emp.pinCode] = [];
+    }
+    
+    acc[emp.pinCode].push(emp.name, emp.empCode);
+    return acc;
+},{})
+
+// console.log(groupedByPinCode);
+
+
+/** Talic Interview Question
+ * find first not repeating character from an string using javascipt. use optimize code. 
+ * ex: let str = 'aabbcdde' ans: c
+ */
+
+function firstNonRepeatingChar(str) {
+    const freq = new Map();
+
+    // Count frequency of each character
+    for (const ch of str) {
+        freq.set(ch, (freq.get(ch) || 0) + 1);
+    }
+
+    // Find the first character with frequency 1
+    for (const ch of str) {
+        if (freq.get(ch) === 1) {
+            return ch;
+        }
+    }
+
+    return null; // No non-repeating character
+}
+
+// const str = "aabbcdde";
+// console.log(firstNonRepeatingChar(str)); // c
+
+function firstNonRepeatingChar(str) {
+    const freq = {};
+
+    for (const ch of str) {
+        freq[ch] = (freq[ch] || 0) + 1;
+    }
+
+    for (const ch of str) {
+        if (freq[ch] === 1) {
+            return ch;
+        }
+    }
+
+    return null;
+}
+
+// console.log(firstNonRepeatingChar("aabbcdde")); // c
