@@ -342,11 +342,11 @@ function moveZeroesToEnd(arr) {
 
 // Move Zeroes to End - Optimized
 function moveZeroesToEndOptimized(arr) {
-  let lastNonZeroFoundAt = 0;
+  let j = 0;
   for (let i = 0; i < arr.length; i++) {
     if (arr[i] !== 0) {
-      [arr[lastNonZeroFoundAt], arr[i]] = [arr[i], arr[lastNonZeroFoundAt]];
-      lastNonZeroFoundAt++;
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+      j++;
     }
   }
   return arr;
@@ -384,6 +384,146 @@ function intersection(arr1, arr2) {
   return result;
 }
 // Example
-let arr1 = [1, 2, 3, 4];
-let arr2 = [3, 4, 5, 6];
-console.log(intersection(arr1, arr2)); // [3, 4]
+// let arr1 = [1, 2, 3, 4];
+// let arr2 = [3, 4, 5, 6];
+// console.log(intersection(arr1, arr2)); // [3, 4]
+
+// Find Second Largest Element in Array
+function secondLargest(arr) {
+  let firstElement = -Infinity;
+  let secondElement = -Infinity;
+
+  for (let num of arr) {
+    if (num > firstElement) {
+      secondElement = firstElement;
+      firstElement = num;
+    } else if (num > secondElement && num < firstElement) {
+      secondElement = num;
+    }
+  }
+  return secondElement;
+}
+// Example
+// let arr = [1, 2, 3, 4, 5];
+// console.log(secondLargest(arr)); // 4
+
+
+// Flatten Nested Array
+function flattenArray(arr) {
+  const result = [];
+  for (let item of arr) {
+    if (Array.isArray(item)) {
+      result.push(...flattenArray(item));
+    } else {
+      result.push(item);
+    }
+  }
+  return result;
+}
+// Example
+// let arr = [1, [2, 3], [4, [5, 6]]];
+// console.log(flattenArray(arr)); // [1, 2, 3, 4, 5, 6]
+
+// Flatten Nested Array - using reduce
+function flattenArrayReduce(arr) {
+  return arr.reduce((acc, item) => {
+    return acc.concat(Array.isArray(item) ? flattenArrayReduce(item) : item);
+  }, []);
+}
+// Example
+// let arr = [1, [2, 3], [4, [5, 6]]];
+// console.log(flattenArrayReduce(arr)); // [1, 2, 3, 4, 5, 6]
+
+
+// Debounce
+// function debounce(func, delay) {
+//   let timeout;
+//   return function (...args) {
+//     const later = () => {
+//       clearTimeout(timeout);
+//       func.apply(this, args);
+//     };
+//     clearTimeout(timeout);
+//     timeout = setTimeout(later, delay);
+//   };
+// }
+
+function debounce(func, delay) {
+
+    let timer;
+
+    return function (...args) {
+
+        clearTimeout(timer);
+
+        timer = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+
+    };
+
+}
+
+// Example
+// const debouncedFunction = debounce(() => console.log('Debounced!'), 1000);
+// debouncedFunction();
+// debouncedFunction();
+// debouncedFunction(); // Only this call will log 'Debounced!' after 1 second
+
+
+// Throttle
+function throttle(fn, delay) {
+
+    let allow = true;
+
+    return function (...args) {
+
+        if (!allow) return;
+
+        fn.apply(this, args);
+
+        allow = false;
+
+        setTimeout(() => allow = true, delay);
+
+    };
+
+}
+// Example
+// const throttledFunction = throttle(() => console.log('Throttled!'), 1000);
+// setInterval(throttledFunction, 200); // Will log 'Throttled!' at most once every second
+
+
+// Deep Clone Object
+function deepClone(obj) {
+    if (obj === null || typeof obj !== "object") return obj;
+
+    if (Array.isArray(obj)) {
+        return obj.map(deepClone);
+    }
+
+    const clone = {};
+
+    for (const key in obj) {
+        clone[key] = deepClone(obj[key]);
+    }
+
+    return clone;
+}
+// Example
+// const obj = { a: 1, b: { c: 2 } };
+// const clonedObj = deepClone(obj);
+// console.log(clonedObj); // { a: 1, b: { c: 2 } }
+
+// Implement Array.prototype.map
+Array.prototype.myMap = function(callback) {
+    const result = [];
+
+    for (let i = 0; i < this.length; i++) {
+        result.push(callback(this[i], i, this));
+    }
+
+    return result;
+};
+
+// 
