@@ -526,4 +526,148 @@ Array.prototype.myMap = function(callback) {
     return result;
 };
 
-// 
+
+// Ride Sharing Matching System
+/**
+ * Logic & Explanation:
+ * 1. FIFO Queues (riders & drivers): Arrays are used to maintain the First-In, First-Out 
+ *  (FIFO) ordering of riders and drivers as required.
+ * 2. Lazy Deletion via Set (activeRiders):
+*   i.  When cancelRider(riderId) is called, removing an element directly from an array 
+*       takes O(N) time.
+*   ii. Instead, we delete riderId from activeRiders in O(1) time.
+    iii. During matchDriverWithRider(), we clean up canceled riders at the front of the riders 
+        queue in $O(1)$ amortized time before attempting a match.
+* 3. Matching Rules: If both drivers and riders queues contain valid entries, 
+*  the earliest driver and earliest rider are popped and returned as [driverId, riderId]. 
+*  Otherwise, [-1, -1] is returned.
+*/
+class RideSharingSystem {
+    constructor() {
+        // Queue to store active rider IDs in FIFO order
+        this.riders = [];
+        // Queue to store available driver IDs in FIFO order
+        this.drivers = [];
+        // Set to efficiently track active/pending riders for fast cancellation
+        this.activeRiders = new Set();
+    }
+
+    /**
+     * Adds a new ride request for the given rider.
+     * @param {number} riderId 
+     */
+    addRider(riderId) {
+        this.riders.push(riderId);
+        this.activeRiders.add(riderId);
+    }
+
+    /**
+     * Marks a driver as available for matching.
+     * @param {number} driverId 
+     */
+    addDriver(driverId) {
+        this.drivers.push(driverId);
+    }
+
+    /**
+     * Matches the earliest available driver with the earliest waiting rider.
+     * Removes canceled riders lazily if encountered at the front of the queue.
+     * @returns {number[]} [driverId, riderId] or [-1, -1] if no match is possible
+     */
+    matchDriverWithRider() {
+        // Remove any canceled riders sitting at the front of the rider queue
+        while (this.riders.length > 0 && !this.activeRiders.has(this.riders[0])) {
+            this.riders.shift();
+        }
+
+        // Check if both driver and rider are available
+        if (this.drivers.length > 0 && this.riders.length > 0) {
+            const matchedDriver = this.drivers.shift();
+            const matchedRider = this.riders.shift();
+            
+            // Remove rider from active set
+            this.activeRiders.delete(matchedRider);
+
+            return [matchedDriver, matchedRider];
+        }
+
+        return [-1, -1];
+    }
+
+    /**
+     * Cancels a pending ride request.
+     * @param {number} riderId 
+     */
+    cancelRider(riderId) {
+        if (this.activeRiders.has(riderId)) {
+            this.activeRiders.delete(riderId);
+        }
+    }
+}
+
+
+// setTimeout(() => console.log('1. Timer'), 0);
+// setImmediate(() => console.log('2. Immediate'));
+// process.nextTick(() => console.log('3. NextTick'));
+// Promise.resolve().then(() => console.log('4. Promise'));
+// console.log('5. Synchronous');
+
+
+for (var i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 0);
+}
+
+// Output:
+// 3
+// 3
+// 3
+
+// Use an IIFE (Most common interview answer)
+
+// Create a new scope for each iteration.
+
+for (var i = 0; i < 3; i++) {
+  (function (j) {
+    setTimeout(() => console.log(j + 1), 0);
+  })(i);
+}
+
+// Output:
+
+// 1
+// 2
+// 3
+ 
+// console.log(a);
+
+// var a = 10;
+ 
+// console.log(b);
+
+// let b = 20;
+ 
+// console.log(typeof null);
+// console.log(typeof []);
+// console.log(typeof {});
+ 
+/*
+console.log(1);
+ 
+setTimeout(() => console.log(2));
+ 
+Promise.resolve().then(() => {
+
+    console.log(3);
+
+    setTimeout(() => console.log(4));
+
+});
+ 
+Promise.resolve().then(() => console.log(5));
+ 
+console.log(6);
+// Output: 1, 6, 3, 5, 2, 4
+
+*/
+
+
